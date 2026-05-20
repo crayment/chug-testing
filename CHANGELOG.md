@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 <!-- #changelog-release-automation-hook-do-not-remove -->
 
+## [0.2.0] - 2026-05-20
+
+### Chore
+- Validate action commit flow ([Cody Rayment](https://github.com/crayment))
+
+
 ## [0.1.3] - 2026-05-20
 
 ### Bug
