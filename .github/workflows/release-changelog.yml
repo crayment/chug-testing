@@ -1,0 +1,26 @@
+name: Update Changelog
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version string for the changelog release section.
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: crayment/chug/.github/actions/chug-release@main
+        id: release
+        with:
+          version: ${{ inputs.version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          commit-changes: true
