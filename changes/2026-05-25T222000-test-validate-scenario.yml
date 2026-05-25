@@ -1,0 +1,5 @@
+description: Integration test for chug validate action scenario
+category: chore
+authors:
+- name: Cody Rayment
+  github: crayment
