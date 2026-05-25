@@ -1,10 +1,10 @@
-# Scenario: Validate Action
+# Scenario: Validate
 
-Validate that `crayment/chug/.github/actions/chug-validate@main` enforces a change file in pull requests.
+Validate that the `crayment/chug` setup action installs the CLI and that `chug validate` enforces a change file in pull requests.
 
 ## Goal
 
-Prove that a consumer repository can reference the public action and get correct PR validation behavior.
+Prove that a consumer repository can reference the public setup action and get correct PR validation behavior.
 
 ## Steps
 
@@ -29,7 +29,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: crayment/chug/.github/actions/chug-validate@main
+      - uses: crayment/chug@main
+      - run: chug validate
+        shell: bash
 ```
 
 4. Create a branch with a normal code or README change but no `changes/` file

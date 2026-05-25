@@ -18,7 +18,7 @@ Record the result as:
 
 ## Assumptions
 
-- `crayment/chug` contains the current public composite actions under `.github/actions/`
+- `crayment/chug` exposes a root setup action (`uses: crayment/chug@v1`) that installs the `chug` CLI. CLI commands (`chug validate`, `chug release`) are used in shell steps.
 - `crayment/chug-testing` is the integration target
 - `gh` is authenticated as `crayment`
 - The default branch is `main` in both repositories

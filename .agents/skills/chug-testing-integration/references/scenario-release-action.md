@@ -1,15 +1,14 @@
-# Scenario: Release Action
+# Scenario: Release
 
-Validate that `crayment/chug/.github/actions/chug-release@main` works from a consumer repo.
+Validate that the `crayment/chug` setup action installs the CLI and that `chug release` works from a consumer repo.
 
 ## Goal
 
-Prove that the public release action can:
+Prove that the public setup action can:
 
-- install Chug
-- run `chug release`
-- detect changed state
-- optionally create a local git commit in CI
+- install the `chug` CLI
+- run `chug release --version`
+- commit and push the resulting changelog changes via shell steps
 
 ## Steps
 
@@ -24,6 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
+        description: Version string for the changelog release section.
         required: true
 
 permissions:
@@ -37,12 +37,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: crayment/chug/.github/actions/chug-release@main
-        id: release
-        with:
-          version: ${{ inputs.version }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          commit-changes: true
+      - uses: crayment/chug@main
+      - name: Run chug release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: chug release --version "${{ inputs.version }}"
+      - name: Commit and push changelog
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git add -A changes/ || true
+          if git diff --cached --quiet; then
+            echo "No changelog changes to commit."
+            exit 0
+          fi
+          git commit -m "Update changelog for ${{ inputs.version }}"
+          git push
 ```
 
 4. Ensure there is at least one pending `changes/*.yml` file on `main`
@@ -54,18 +67,14 @@ jobs:
 ## Expected Result
 
 - the workflow succeeds
-- the action outputs indicate whether changes were written and committed
-- the local commit is created inside the workflow when there are staged changes
-- the no-change run completes cleanly
-- if Chug's release model writes a `No changes` version section, then the no-change run should still report `changed=true` and `committed=true`
-- if Chug ever changes to a true no-op release model, update this scenario before treating those outputs as a bug
+- `chug release` writes or updates `CHANGELOG.md`
+- the commit and push step creates a commit when changelog changes exist
+- the no-change run completes cleanly with "No changelog changes to commit." logged
 
 ## Record
 
 - `PRODUCT_REPO_DIR`
 - `CONSUMER_REPO_DIR`
 - workflow run URL
-- whether `changed` was true or false
-- whether `committed` was true or false
 - commit SHA if one was created
 - any permissions or branch policy constraints encountered
