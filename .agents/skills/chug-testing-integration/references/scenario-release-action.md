@@ -69,7 +69,7 @@ jobs:
 - the workflow succeeds
 - `chug release` writes or updates `CHANGELOG.md`
 - the commit and push step creates a commit when changelog changes exist
-- the no-change run completes cleanly with "No changelog changes to commit." logged
+- the no-change run completes cleanly and creates a commit — `chug release` always writes a version section to CHANGELOG.md (even when there are no pending change files), so CHANGELOG.md will be modified and the commit step will commit and push
 
 ## Record
 

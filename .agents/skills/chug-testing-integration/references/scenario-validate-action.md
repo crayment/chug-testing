@@ -6,6 +6,17 @@ Validate that the `crayment/chug` setup action installs the CLI and that `chug v
 
 Prove that a consumer repository can reference the public setup action and get correct PR validation behavior.
 
+## Precondition
+
+`chug validate` must exist in the published PyPI version of `chug-cli`. Confirm with:
+
+```bash
+pip index versions chug-cli
+chug validate --help
+```
+
+If `validate` is not available in the latest PyPI release, run `scenario-validate-prerelease.md` instead, which installs from the action repo source.
+
 ## Steps
 
 1. Resolve `PRODUCT_REPO_DIR` and `CONSUMER_REPO_DIR` using `repository-discovery.md`

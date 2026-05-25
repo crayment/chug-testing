@@ -41,7 +41,8 @@ The purpose of this skill is to prove that Chug works as a product:
 - **[repository-baseline.md](./references/repository-baseline.md)** — Shared setup, repo assumptions, and operating rules
 - **[repository-discovery.md](./references/repository-discovery.md)** — How to reuse an existing clone or create one when local paths are unknown
 - **[scenario-cli-happy-path.md](./references/scenario-cli-happy-path.md)** — Validate the Chug CLI in the consumer repo
-- **[scenario-validate-action.md](./references/scenario-validate-action.md)** — Validate that `chug validate` enforces a change file in PRs via the setup action
+- **[scenario-validate-action.md](./references/scenario-validate-action.md)** — Validate that `chug validate` enforces a change file in PRs via the setup action (requires `validate` to be on PyPI)
+- **[scenario-validate-prerelease.md](./references/scenario-validate-prerelease.md)** — Same as above but uses `source: repo` — use this when `chug validate` is not yet published to PyPI
 - **[scenario-release-action.md](./references/scenario-release-action.md)** — Validate that `chug release` updates the changelog and commits via the setup action
 
 ## Key Reminders
