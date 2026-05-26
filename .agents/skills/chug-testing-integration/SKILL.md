@@ -1,61 +1,49 @@
 ---
 name: chug-testing-integration
-description: Run real integration checks against the public crayment/chug and crayment/chug-testing repositories. Load this skill when validating Chug end-to-end through real git commits, pull requests, merges, releases, or workflow runs on any local machine.
+description: Run end-to-end integration tests for Chug against real GitHub repositories. Tests the full product workflow — PR validation, merging, and changelog releases — using crayment/chug-testing as the consumer repo and crayment/chug as the product.
 tags:
   - chug
   - github
   - integration-tests
-version: 1.0.0
+version: 2.0.0
 author: Claude
 ---
 
-# Chug Testing Integration
+# Chug Integration Testing
 
-Use this skill to validate Chug through the real public repositories, not just local unit tests.
+This skill validates Chug as a product through real GitHub repositories — not unit tests. It exercises the full consumer workflow that any team using Chug would follow.
 
-The purpose of this skill is to prove that Chug works as a product:
+## What gets tested
 
-- the CLI works in a consumer repository
-- the GitHub Actions are consumable from another repository
-- the release workflow behaves correctly with real git history and GitHub state
+- A PR without a change file fails the `chug validate` CI check
+- Adding a change file makes that PR pass
+- Merging the PR and triggering a release updates `CHANGELOG.md` and deletes the change file
+- A second release with no pending changes writes a "No changes" section
 
-## Preconditions
+## Repositories
 
-- Assume the public remotes are `crayment/chug` and `crayment/chug-testing`
-- Resolve local clone paths before running any scenario
-- Assume `gh auth status` is healthy before starting
-- Do not delete public repos without explicit approval
+- **Product**: `crayment/chug` — the Chug CLI and GitHub Action
+- **Consumer**: `crayment/chug-testing` — a real repo that uses Chug like any third-party would
 
-## Quick Start
+Both repos must be accessible via `gh`. Confirm with `gh auth status` before starting.
 
-1. Read [repository-baseline.md](./references/repository-baseline.md)
-2. Read [repository-discovery.md](./references/repository-discovery.md)
-3. Resolve `PRODUCT_REPO_DIR` and `CONSUMER_REPO_DIR`
-4. Pick one scenario file from `references/`
-5. Follow the scenario exactly
-6. Record what happened, including URLs, workflow runs, and failure modes
-7. If the scenario fails, explain whether the bug is in Chug, the test setup, or GitHub policy
+Local clone paths:
+- Product: `/Users/crayment/dev/me/chug`
+- Consumer: `/Users/crayment/dev/me/chug-testing`
 
-## Navigation
+## How to run
 
-- **[repository-baseline.md](./references/repository-baseline.md)** — Shared setup, repo assumptions, and operating rules
-- **[repository-discovery.md](./references/repository-discovery.md)** — How to reuse an existing clone or create one when local paths are unknown
-- **[scenario-cli-happy-path.md](./references/scenario-cli-happy-path.md)** — Validate the Chug CLI in the consumer repo
-- **[scenario-validate-action.md](./references/scenario-validate-action.md)** — Validate that `chug validate` enforces a change file in PRs via the setup action (requires `validate` to be on PyPI)
-- **[scenario-validate-prerelease.md](./references/scenario-validate-prerelease.md)** — Same as above but uses `source: repo` — use this when `chug validate` is not yet published to PyPI
-- **[scenario-release-action.md](./references/scenario-release-action.md)** — Validate that `chug release` updates the changelog and commits via the setup action
+Load this skill when asked to run Chug integration tests. Then read the step files in order:
 
-## Key Reminders
+1. **[steps-pr-and-merge.md](./references/steps-pr-and-merge.md)** — Create a PR, verify validation fails, add a change file, verify it passes, merge
+2. **[steps-release.md](./references/steps-release.md)** — Trigger a changelog release, verify the output, then run a second release with no pending changes
 
-- Treat `CONSUMER_REPO_DIR` as an integration environment, not a scratchpad
-- Prefer creating short-lived branches and PRs over direct pushes when testing workflows
-- Capture real evidence: PR URLs, workflow run URLs, commit SHAs, and exact command output
-- Keep scenarios small and isolated so failures are easy to diagnose
-- If a workflow requires new repo settings or permissions, note that explicitly
+Run them in order — the merge from step 1 sets up the pending change file that step 2 releases.
 
-## Red Flags — Stop
+## Rules
 
-- A scenario requires force-pushing or destructive git cleanup
-- A scenario would delete the public test repo
-- A scenario depends on unpublished code from `chug` unless that is the point of the test
-- The baseline assumptions in `repository-baseline.md` no longer match reality
+- Work in `crayment/chug-testing`, not in `crayment/chug`
+- Create short-lived branches for test PRs; delete them after the scenario completes
+- Do not force-push or rewrite history on either repo
+- Capture evidence as you go: branch names, PR URLs, workflow run URLs, commit SHAs
+- If a workflow fails unexpectedly, check whether the failure is in Chug itself, the test setup, or a GitHub policy constraint — and report which
