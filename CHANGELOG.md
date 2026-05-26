@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 <!-- #changelog-release-automation-hook-do-not-remove -->
 
+## [0.1.0-test] - 2026-05-26
+
+### Chore
+- Migrate workflows to setup action model ([#2](https://github.com/crayment/chug-testing/pull/2), [Cody Rayment](https://github.com/crayment))
+- Test change for integration scenario ([#6](https://github.com/crayment/chug-testing/pull/6), [Cody Rayment](https://github.com/crayment))
+
+
 ## [0.3.1-no-change-test] - 2026-05-25
 
 - No changes
