@@ -1,0 +1,5 @@
+description: Add Elixir project and mix chug.new integration test
+category: feature
+authors:
+- name: Cody Rayment
+  github: crayment

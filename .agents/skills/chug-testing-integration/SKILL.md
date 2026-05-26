@@ -19,6 +19,7 @@ This skill validates Chug as a product through real GitHub repositories — not 
 - Adding a change file makes that PR pass
 - Merging the PR and triggering a release updates `CHANGELOG.md` and deletes the change file
 - A second release with no pending changes writes a "No changes" section
+- `mix chug.new` (Elixir task) creates a valid change file using the chug source from `crayment/chug` main
 
 ## Repositories
 
@@ -37,8 +38,9 @@ Load this skill when asked to run Chug integration tests. Then read the step fil
 
 1. **[steps-pr-and-merge.md](./references/steps-pr-and-merge.md)** — Create a PR, verify validation fails, add a change file, verify it passes, merge
 2. **[steps-release.md](./references/steps-release.md)** — Trigger a changelog release, verify the output, then run a second release with no pending changes
+3. **[steps-elixir.md](./references/steps-elixir.md)** — Run `mix chug.new` locally in the consumer repo and verify it creates a valid change file using chug source from `crayment/chug` main
 
-Run them in order — the merge from step 1 sets up the pending change file that step 2 releases.
+Run steps 1 and 2 in order — the merge from step 1 sets up the pending change file that step 2 releases. Step 3 is independent and can be run on its own when testing Elixir task changes.
 
 ## Rules
 
