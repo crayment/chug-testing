@@ -1,0 +1,40 @@
+# ABOUTME: Functional test for the mix chug.new task installed from crayment/chug main.
+# ABOUTME: Installs from GitHub source (not Hex.pm) to test unreleased changes before a release.
+
+name: Test Elixir Task
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.19"
+          otp-version: "28"
+
+      - name: Install chug from source
+        run: mix deps.get
+
+      - name: Run mix chug.new
+        run: |
+          mix chug.new --description "Test change from Elixir task" --category chore
+
+      - name: Verify change file was created
+        run: |
+          FILES=$(ls changes/*.yml 2>/dev/null | wc -l)
+          if [ "$FILES" -eq 0 ]; then
+            echo "::error::mix chug.new did not create a change file in changes/"
+            exit 1
+          fi
+          echo "Change file created:"
+          cat changes/*.yml
