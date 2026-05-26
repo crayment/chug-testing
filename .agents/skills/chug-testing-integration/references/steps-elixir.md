@@ -2,38 +2,40 @@
 
 Test that `mix chug.new` works correctly using the chug task installed from `crayment/chug` main branch source.
 
-This installs directly from GitHub (not Hex.pm) so it tests unreleased changes. Run this before cutting a new chug release that includes Elixir task changes.
+The `mix.exs` in `crayment/chug-testing` pulls the chug dep directly from GitHub, not Hex.pm — so this tests whatever is currently on `crayment/chug` main, including unreleased changes.
 
-## Step 1 — Trigger the test workflow
-
-```bash
-gh workflow run test-elixir-task.yml \
-  --repo crayment/chug-testing \
-  --ref main
-```
-
-## Step 2 — Wait for completion
+## Step 1 — Install the dep
 
 ```bash
-gh run watch --repo crayment/chug-testing
+cd /Users/crayment/dev/me/chug-testing
+mix deps.get
 ```
 
-## Step 3 — Verify the result
+## Step 2 — Run mix chug.new
 
-Expected:
-- The workflow succeeds
-- `mix deps.get` installs the chug task from `crayment/chug` main
-- `mix chug.new` runs and creates a timestamped `.yml` file in `changes/`
-- The workflow logs show the contents of the created file
-- The file contains `description`, `category`, and `authors` fields
+```bash
+mix chug.new --description "Test change from Elixir task" --category chore
+```
 
-If the workflow fails:
-- A `mix: command not found` error means the Elixir setup step failed
-- A `no such command 'chug.new'` error means the dep wasn't installed correctly — check the `mix.exs` GitHub dep reference
-- A missing `changes/` file means `mix chug.new` ran but failed silently — check the task output
+## Step 3 — Verify the change file was created
+
+```bash
+ls changes/
+cat changes/*test-change-from-elixir-task*.yml
+```
+
+Expected: a timestamped `.yml` file in `changes/` containing `description`, `category`, and `authors` fields.
+
+## Step 4 — Clean up
+
+Delete the test change file so it doesn't linger:
+
+```bash
+rm changes/*test-change-from-elixir-task*.yml
+```
 
 ## Evidence to capture
 
-- Workflow run URL
-- The contents of the generated change file (shown in workflow logs)
-- Any failure output if the run does not succeed
+- Output of `mix chug.new`
+- Contents of the generated change file
+- Any error output if the task fails
