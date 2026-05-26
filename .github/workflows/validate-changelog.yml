@@ -14,4 +14,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: crayment/chug/.github/actions/chug-validate@main
+      - uses: crayment/chug@main
+      - run: chug validate
+        shell: bash
