@@ -4,12 +4,15 @@ Test that `mix chug.new` works correctly using the chug task installed from `cra
 
 The `mix.exs` in `crayment/chug-testing` pulls the chug dep directly from GitHub, not Hex.pm — so this tests whatever is currently on `crayment/chug` main, including unreleased changes.
 
-## Step 1 — Install the dep
+## Step 1 — Update the dep from main
+
+Run from the `crayment/chug-testing` local clone:
 
 ```bash
-cd /Users/crayment/dev/me/chug-testing
-mix deps.get
+mix deps.update chug && mix deps.get
 ```
+
+`mix deps.update chug` re-fetches the latest `main` from GitHub, ignoring any previously locked SHA. `mix deps.get` installs it. Always use `deps.update` rather than `deps.get` alone — `deps.get` will use the cached version if the SHA hasn't changed in the lock file.
 
 ## Step 2 — Run mix chug.new
 

@@ -19,7 +19,7 @@ defmodule ChugTesting.MixProject do
 
   defp deps do
     [
-      {:chug, github: "crayment/chug", sparse: "elixir", only: :dev, runtime: false}
+      {:chug, github: "crayment/chug", sparse: "elixir", branch: "main", only: :dev, runtime: false}
     ]
   end
 end
