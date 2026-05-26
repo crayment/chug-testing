@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 <!-- #changelog-release-automation-hook-do-not-remove -->
 
+## [0.1.1-test] - 2026-05-26
+
+- No changes
+
+
 ## [0.1.0-test] - 2026-05-26
 
 ### Chore
