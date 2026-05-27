@@ -25,6 +25,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: chug release --version "${{ inputs.version }}"
       - name: Commit and push changelog
+        id: commit_changelog
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
@@ -33,7 +34,21 @@ jobs:
           git add -A changes/ || true
           if git diff --cached --quiet; then
             echo "No changelog changes to commit."
-            exit 0
+          else
+            git commit -m "Update changelog for ${{ inputs.version }}"
+            git push
           fi
-          git commit -m "Update changelog for ${{ inputs.version }}"
-          git push
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Create GitHub release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.version }}
+          COMMIT_SHA: ${{ steps.commit_changelog.outputs.commit_sha }}
+        run: |
+          NOTES=$(awk -v version="$VERSION" 'index($0, "## [" version "]") == 1 {found=1; next} found && /^## \[/{exit} found{print}' CHANGELOG.md)
+          gh release create "$VERSION" \
+            --title "$VERSION" \
+            --notes "$NOTES" \
+            --generate-notes \
+            --target "$COMMIT_SHA"

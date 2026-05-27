@@ -1,0 +1,5 @@
+description: Create GitHub release with chug changelog content and auto-generated notes
+category: chore
+authors:
+- name: Cody Rayment
+  github: crayment
