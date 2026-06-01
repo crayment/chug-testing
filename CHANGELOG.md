@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 <!-- #changelog-release-automation-hook-do-not-remove -->
 
+## [v0.5.0] - 2026-06-01
+
+### Feature
+- Add Simpsons quote: "To alcohol! The cause of, and solution to, all of life's problems." — Homer Simpson ([#11](https://github.com/crayment/chug-testing/pull/11), [Cody Rayment](https://github.com/crayment))
+
+
 ## [v0.4.0] - 2026-06-01
 
 - No changes
