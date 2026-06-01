@@ -13,3 +13,7 @@ A growing collection. Each quote added via a pull request, tracked by Chug.
 "Trying is the first step towards failure." — Homer Simpson
 
 "Facts are meaningless. You could use facts to prove anything that's even remotely true!" — Homer Simpson
+
+"I'm not not licking toads." — Bart Simpson
+
+"To alcohol! The cause of, and solution to, all of life's problems." — Homer Simpson
