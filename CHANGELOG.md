@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 <!-- #changelog-release-automation-hook-do-not-remove -->
 
+## [v0.4.0] - 2026-06-01
+
+- No changes
+
+
 ## [v0.3.0] - 2026-06-01
 
 ### Feature
