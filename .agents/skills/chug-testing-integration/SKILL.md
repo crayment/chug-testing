@@ -16,16 +16,21 @@ author: Claude
 - **Product**: `crayment/chug` — the Chug CLI and GitHub Action
 - **Consumer**: `crayment/chug-testing` — a real consumer repo; test PRs add quotes to `simpsons-quotes.md`
 
-Local clone paths:
-- Product: `/Users/crayment/dev/me/chug`
-- Consumer: `/Users/crayment/dev/me/chug-testing`
-
 ## Prerequisites
 
 ```bash
 gh auth status          # must be authenticated as crayment
 chug --version          # if missing: uv tool install chug-cli
 ```
+
+Resolve the local clone of `crayment/chug-testing` before starting. Check likely locations (e.g. `~/dev`, parent of your current directory) by verifying the git remote:
+
+```bash
+git -C <candidate-path> remote get-url origin
+# should match: git@github.com:crayment/chug-testing.git
+```
+
+Set `CONSUMER_DIR` to the confirmed path and use it throughout the step files.
 
 ## Expected noise
 

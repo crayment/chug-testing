@@ -21,9 +21,9 @@ gh run watch <run-id> --repo crayment/chug-testing
 ## Step 2 — Verify CHANGELOG.md and GitHub release
 
 ```bash
-git -C /Users/crayment/dev/me/chug-testing pull
-cat /Users/crayment/dev/me/chug-testing/CHANGELOG.md
-ls /Users/crayment/dev/me/chug-testing/changes/ 2>/dev/null || echo "(changes/ gone — all files processed)"
+git -C "$CONSUMER_DIR" pull
+cat "$CONSUMER_DIR/CHANGELOG.md"
+ls "$CONSUMER_DIR/changes/" 2>/dev/null || echo "(changes/ gone — all files processed)"
 gh release view <version> --repo crayment/chug-testing
 ```
 
@@ -45,8 +45,8 @@ gh workflow run release-changelog.yml \
 sleep 5 && gh run list --repo crayment/chug-testing --workflow release-changelog.yml --limit 1
 gh run watch <run-id> --repo crayment/chug-testing
 
-git -C /Users/crayment/dev/me/chug-testing pull
-cat /Users/crayment/dev/me/chug-testing/CHANGELOG.md
+git -C "$CONSUMER_DIR" pull
+cat "$CONSUMER_DIR/CHANGELOG.md"
 gh release view <version> --repo crayment/chug-testing
 ```
 
