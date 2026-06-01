@@ -80,9 +80,11 @@ Record the passing workflow run URL.
 
 ```bash
 gh pr merge --squash --delete-branch
+git -C /Users/crayment/dev/me/chug-testing pull
+git -C /Users/crayment/dev/me/chug-testing log --oneline -1
 ```
 
-Record the merge commit SHA.
+Record the merge commit SHA from the log output.
 
 ## Evidence to capture
 

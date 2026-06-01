@@ -44,6 +44,19 @@ Load this skill when asked to run Chug integration tests. Then read the step fil
 
 Run them in order — the merge from step 1 sets up the pending change file that step 2 releases.
 
+## Prerequisites
+
+Before starting, confirm:
+
+```bash
+gh auth status          # must be authenticated as crayment
+chug --version          # must be installed; if missing: uv tool install chug-cli
+```
+
+## Expected noise
+
+Every workflow run will show Node.js 20 deprecation warnings from `actions/checkout`, `actions/setup-python`, and `astral-sh/setup-uv`. These are expected and do not indicate a test failure — ignore them.
+
 ## Rules
 
 - Work in `crayment/chug-testing`, not in `crayment/chug`

@@ -16,7 +16,7 @@ There should be at least one `.yml` file. If there isn't, run `steps-pr-and-merg
 
 ## Step 2 — Pick a version and trigger the release workflow
 
-Use semver with a `v` prefix, e.g. `v0.1.0`. Check existing releases to avoid collisions:
+Use semver with a `v` prefix. Check the latest release and use the next minor version — e.g. if latest is `v0.3.0`, use `v0.4.0`:
 
 ```bash
 gh release list --repo crayment/chug-testing --limit 5
@@ -46,11 +46,12 @@ Note: workflow runs will show Node.js 20 deprecation warnings — these are expe
 ```bash
 git -C /Users/crayment/dev/me/chug-testing pull
 cat /Users/crayment/dev/me/chug-testing/CHANGELOG.md
+ls /Users/crayment/dev/me/chug-testing/changes/ 2>/dev/null || echo "(changes/ directory is gone — all files were processed)"
 ```
 
 Expected:
 - A new `[version]` section at the top with the Simpsons quote change listed
-- The `changes/` directory no longer contains the processed `.yml` file (the directory itself may disappear if it was the only file)
+- The `changes/` directory no longer contains the processed `.yml` file (the directory itself may disappear entirely — that's expected)
 - A commit was pushed to `main` by `github-actions[bot]`
 
 ## Step 4 — Verify the GitHub release
