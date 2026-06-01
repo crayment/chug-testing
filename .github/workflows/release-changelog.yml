@@ -19,6 +19,15 @@ jobs:
         with:
           fetch-depth: 0
       - uses: crayment/chug@main
+      - name: Capture release notes
+        id: release_notes
+        shell: bash
+        run: |
+          NOTES=$(chug preview)
+          echo "notes<<CHUG_RELEASE_NOTES_EOF" >> "$GITHUB_OUTPUT"
+          echo "$NOTES" >> "$GITHUB_OUTPUT"
+          echo "CHUG_RELEASE_NOTES_EOF" >> "$GITHUB_OUTPUT"
+
       - name: Run chug release
         shell: bash
         env:
@@ -45,10 +54,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ inputs.version }}
           COMMIT_SHA: ${{ steps.commit_changelog.outputs.commit_sha }}
+          RELEASE_NOTES: ${{ steps.release_notes.outputs.notes }}
         run: |
-          NOTES=$(awk -v version="$VERSION" 'index($0, "## [" version "]") == 1 {found=1; next} found && /^## \[/{exit} found{print}' CHANGELOG.md)
+          printf '## Release Notes\n\n%s\n' "$RELEASE_NOTES" > /tmp/release-notes.md
           gh release create "$VERSION" \
             --title "$VERSION" \
-            --notes "$NOTES" \
+            --notes-file /tmp/release-notes.md \
             --generate-notes \
             --target "$COMMIT_SHA"

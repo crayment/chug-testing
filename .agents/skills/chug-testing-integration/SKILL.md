@@ -5,47 +5,45 @@ tags:
   - chug
   - github
   - integration-tests
-version: 2.0.0
+version: 3.0.0
 author: Claude
 ---
 
 # Chug Integration Testing
 
-This skill validates Chug as a product through real GitHub repositories — not unit tests. It exercises the full consumer workflow that any team using Chug would follow.
-
-## What gets tested
-
-- A PR without a change file fails the `chug validate` CI check
-- Adding a change file makes that PR pass
-- Merging the PR and triggering a release updates `CHANGELOG.md` and deletes the change file
-- A second release with no pending changes writes a "No changes" section
-- `mix chug.new` (Elixir task) creates a valid change file using the chug source from `crayment/chug` main
-
 ## Repositories
 
 - **Product**: `crayment/chug` — the Chug CLI and GitHub Action
-- **Consumer**: `crayment/chug-testing` — a real repo that uses Chug like any third-party would
+- **Consumer**: `crayment/chug-testing` — a real consumer repo; test PRs add quotes to `simpsons-quotes.md`
 
-Both repos must be accessible via `gh`. Confirm with `gh auth status` before starting.
+## Prerequisites
 
-Local clone paths:
-- Product: `/Users/crayment/dev/me/chug`
-- Consumer: `/Users/crayment/dev/me/chug-testing`
+```bash
+gh auth status          # must be authenticated as crayment
+chug --version          # if missing: uv tool install chug-cli
+```
 
-## How to run
+Resolve the local clone of `crayment/chug-testing` before starting. Check likely locations (e.g. `~/dev`, parent of your current directory) by verifying the git remote:
 
-Load this skill when asked to run Chug integration tests. Then read the step files in order:
+```bash
+git -C <candidate-path> remote get-url origin
+# should match: git@github.com:crayment/chug-testing.git
+```
 
-1. **[steps-pr-and-merge.md](./references/steps-pr-and-merge.md)** — Create a PR, verify validation fails, add a change file, verify it passes, merge
-2. **[steps-release.md](./references/steps-release.md)** — Trigger a changelog release, verify the output, then run a second release with no pending changes
-3. **[steps-elixir.md](./references/steps-elixir.md)** — Run `mix chug.new` locally in the consumer repo and verify it creates a valid change file using chug source from `crayment/chug` main
+Set `CONSUMER_DIR` to the confirmed path and use it throughout the step files.
 
-Run steps 1 and 2 in order — the merge from step 1 sets up the pending change file that step 2 releases. Step 3 is independent and can be run on its own when testing Elixir task changes.
+## Expected noise
+
+Every workflow run shows Node.js 20 deprecation warnings — expected, ignore them.
+
+## Steps
+
+1. **[steps-pr-and-merge.md](./references/steps-pr-and-merge.md)** — Add a Simpsons quote, verify validation fails, add change file, verify it passes, merge
+2. **[steps-release.md](./references/steps-release.md)** — Trigger a release, verify CHANGELOG.md and GitHub release, run a no-changes release
 
 ## Rules
 
 - Work in `crayment/chug-testing`, not in `crayment/chug`
-- Create short-lived branches for test PRs; delete them after the scenario completes
-- Do not force-push or rewrite history on either repo
+- Create short-lived branches for test PRs; delete them when done
 - Capture evidence as you go: branch names, PR URLs, workflow run URLs, commit SHAs
-- If a workflow fails unexpectedly, check whether the failure is in Chug itself, the test setup, or a GitHub policy constraint — and report which
+- If a workflow fails unexpectedly, determine whether the failure is in Chug, the test setup, or a GitHub policy constraint — and report which
