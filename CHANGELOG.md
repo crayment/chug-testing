@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 <!-- #changelog-release-automation-hook-do-not-remove -->
 
+## [v0.1.0] - 2026-06-01
+
+### Feature
+- Add Elixir project and mix chug.new integration test ([#7](https://github.com/crayment/chug-testing/pull/7), [Cody Rayment](https://github.com/crayment))
+- Add Simpsons quote: It's a perfectly cromulent word. ([#9](https://github.com/crayment/chug-testing/pull/9), [Cody Rayment](https://github.com/crayment))
+
+### Chore
+- Create GitHub release with chug changelog content and auto-generated notes ([#8](https://github.com/crayment/chug-testing/pull/8), [Cody Rayment](https://github.com/crayment))
+
+
 ## [0.1.1-test] - 2026-05-26
 
 - No changes
