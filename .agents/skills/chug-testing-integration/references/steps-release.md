@@ -16,26 +16,30 @@ There should be at least one `.yml` file. If there isn't, run `steps-pr-and-merg
 
 ## Step 2 — Pick a version and trigger the release workflow
 
-Pick the next version. Check the latest tag to avoid collisions:
+Use semver with a `v` prefix, e.g. `v0.1.0`. Check existing releases to avoid collisions:
 
 ```bash
 gh release list --repo crayment/chug-testing --limit 5
 ```
 
-Then trigger the release:
+Then trigger the release and grab the run ID:
 
 ```bash
 gh workflow run release-changelog.yml \
   --repo crayment/chug-testing \
   --ref main \
   -f version=<next-version>
+
+sleep 5 && gh run list --repo crayment/chug-testing --workflow release-changelog.yml --limit 1
 ```
 
-Wait for it to complete:
+Wait for it to complete using the run ID from above:
 
 ```bash
-gh run watch --repo crayment/chug-testing
+gh run watch <run-id> --repo crayment/chug-testing
 ```
+
+Note: workflow runs will show Node.js 20 deprecation warnings — these are expected and can be ignored.
 
 ## Step 3 — Verify CHANGELOG.md
 
@@ -46,7 +50,8 @@ cat /Users/crayment/dev/me/chug-testing/CHANGELOG.md
 
 Expected:
 - A new `[version]` section at the top with the Simpsons quote change listed
-- The `changes/` directory no longer contains the processed `.yml` file
+- The `changes/` directory no longer contains the processed `.yml` file (the directory itself may disappear if it was the only file)
+- A commit was pushed to `main` by `github-actions[bot]`
 
 ## Step 4 — Verify the GitHub release
 
@@ -56,25 +61,24 @@ gh release view <version> --repo crayment/chug-testing
 
 Expected:
 - A GitHub release exists for the version
-- The release body starts with `## Release Notes` followed by the changelog content
+- The release body contains the changelog content (categories, bullet points with PR links and author attribution)
 - A `## What's Changed` section follows with PR links
-- A `## New Contributors` section if applicable
+- A `**Full Changelog**` link at the bottom
 
 Record the release URL and paste the release body.
 
 ## Step 5 — Trigger a second release with no pending changes
 
+Pick the next version (e.g. if first was `v0.1.0`, use `v0.2.0`):
+
 ```bash
 gh workflow run release-changelog.yml \
   --repo crayment/chug-testing \
   --ref main \
-  -f version=<next-version-2>
-```
+  -f version=<next-version>
 
-Wait for completion:
-
-```bash
-gh run watch --repo crayment/chug-testing
+sleep 5 && gh run list --repo crayment/chug-testing --workflow release-changelog.yml --limit 1
+gh run watch <run-id> --repo crayment/chug-testing
 ```
 
 ## Step 6 — Verify the no-changes release
@@ -87,7 +91,7 @@ gh release view <version-2> --repo crayment/chug-testing
 
 Expected:
 - `CHANGELOG.md` has a new section containing `- No changes`
-- The GitHub release exists with an empty `## Release Notes` section
+- A GitHub release exists for the version
 
 ## Evidence to capture
 

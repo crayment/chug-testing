@@ -2,7 +2,12 @@
 
 Test that `chug validate` enforces a change file on pull requests, then merge a valid PR that adds a Simpsons quote.
 
-The "product" in this repo is `simpsons-quotes.md` — a growing collection of quotes. Each PR adds a quote and a matching change file. This gives every test run real content to track through the changelog and GitHub release.
+The "product" in this repo is `simpsons-quotes.md` — a growing collection of Simpsons quotes. Each PR adds a quote and a matching change file. This gives every test run real content to track through the changelog and GitHub release.
+
+## State assumptions
+
+- `simpsons-quotes.md` already exists on `main` with some starter quotes. If it doesn't, create it.
+- There may be pre-existing change files in `changes/` on `main` from prior runs. That's fine — they'll all be consumed together in the next release. Your quote will be included alongside them.
 
 ## Setup
 
@@ -15,14 +20,14 @@ git -C /Users/crayment/dev/me/chug-testing pull
 
 ## Step 1 — Open a PR without a change file
 
-Create a branch, add a Simpsons quote to `simpsons-quotes.md`, but no change file:
+Create a branch and add a Simpsons quote to `simpsons-quotes.md`, but no change file:
 
 ```bash
 cd /Users/crayment/dev/me/chug-testing
 git checkout -b test/add-simpsons-quote
 ```
 
-Append a Simpsons quote to `simpsons-quotes.md`. Pick any quote — make it a good one. Format:
+Append a new Simpsons quote to `simpsons-quotes.md`. Pick any quote — make it a good one. Format:
 
 ```
 "Quote text here." — Character Name
@@ -39,7 +44,7 @@ gh pr create --title "Add Simpsons quote" --body "A new quote for the collection
 
 ## Step 2 — Confirm validation fails
 
-Wait for the `Validate Changelog Entry` workflow to run on the PR:
+Wait for the `Validate Changelog Entry` workflow to run on the PR. This command will block until checks complete:
 
 ```bash
 gh pr checks --watch
@@ -61,7 +66,7 @@ git commit -m "Add change file"
 git push
 ```
 
-Wait for the validate check to re-run:
+Run the check watcher again (a second invocation — it watches the latest checks on the PR):
 
 ```bash
 gh pr checks --watch
