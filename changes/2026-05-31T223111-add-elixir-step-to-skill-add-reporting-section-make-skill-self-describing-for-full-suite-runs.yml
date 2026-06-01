@@ -1,0 +1,6 @@
+description: Add Elixir step to skill, add reporting section, make skill self-describing
+  for full suite runs
+category: chore
+authors:
+- name: Cody Rayment
+  github: crayment
