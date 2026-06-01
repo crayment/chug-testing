@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 <!-- #changelog-release-automation-hook-do-not-remove -->
 
+## [v0.7.0] - 2026-06-01
+
+### Feature
+- Add Simpsons quote: "I am so smart! S-M-R-T!" — Homer Simpson ([#14](https://github.com/crayment/chug-testing/pull/14), [Cody Rayment](https://github.com/crayment))
+
+### Chore
+- Add simpsons-quotes.md as integration test product; use chug preview for release notes ([#12](https://github.com/crayment/chug-testing/pull/12), [Cody Rayment](https://github.com/crayment))
+- Add simpsons-quotes.md, use chug preview for release notes, and refine integration test skill ([#12](https://github.com/crayment/chug-testing/pull/12), [Cody Rayment](https://github.com/crayment))
+
+
 ## [v0.6.0] - 2026-06-01
 
 - No changes
