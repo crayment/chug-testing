@@ -45,6 +45,8 @@ Record the failing workflow run URL.
 
 ## Step 3 — Add a change file and confirm validation passes
 
+Run from `$CONSUMER_DIR` (the `cd` from Step 1 should already be in effect):
+
 ```bash
 chug new --description "Add Simpsons quote: <the quote you added>" --category feature
 git add changes/

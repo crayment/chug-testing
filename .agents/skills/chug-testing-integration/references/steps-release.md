@@ -36,6 +36,8 @@ Record the workflow run URL and paste the GitHub release body.
 
 ## Step 3 — Run a second release with no pending changes
 
+Pick the next version after Step 1's (e.g. if Step 1 used `v0.5.0`, use `v0.6.0`):
+
 ```bash
 gh workflow run release-changelog.yml \
   --repo crayment/chug-testing \
