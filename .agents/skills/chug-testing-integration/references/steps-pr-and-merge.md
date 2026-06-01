@@ -61,7 +61,9 @@ Expected: the `validate` check passes. Record the passing workflow run URL.
 
 ```bash
 gh pr merge --squash --delete-branch --repo crayment/chug-testing
+git -C "$CONSUMER_DIR" checkout main
 git -C "$CONSUMER_DIR" pull && git -C "$CONSUMER_DIR" log --oneline -1
+git -C "$CONSUMER_DIR" branch -d test/add-simpsons-quote 2>/dev/null || true
 ```
 
 Record the merge commit SHA.
