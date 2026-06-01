@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 <!-- #changelog-release-automation-hook-do-not-remove -->
 
+## [v0.3.0] - 2026-06-01
+
+### Feature
+- Add Simpsons quote: I'm not not licking toads. ([#10](https://github.com/crayment/chug-testing/pull/10), [Cody Rayment](https://github.com/crayment))
+
+
 ## [v0.2.0] - 2026-06-01
 
 - No changes
