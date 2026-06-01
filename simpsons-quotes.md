@@ -17,3 +17,5 @@ A growing collection. Each quote added via a pull request, tracked by Chug.
 "I'm not not licking toads." — Bart Simpson
 
 "To alcohol! The cause of, and solution to, all of life's problems." — Homer Simpson
+
+"I am so smart! S-M-R-T!" — Homer Simpson
