@@ -1,6 +1,6 @@
 # Steps: Release
 
-Trigger a changelog release, verify the output, then run a second release with no pending changes.
+Trigger a changelog release, verify the output including the GitHub release, then run a second release with no pending changes.
 
 Requires a merged PR with a change file on `main` — run `steps-pr-and-merge.md` first if needed.
 
@@ -14,15 +14,21 @@ ls /Users/crayment/dev/me/chug-testing/changes/
 
 There should be at least one `.yml` file. If there isn't, run `steps-pr-and-merge.md` first.
 
-## Step 2 — Trigger the release workflow
+## Step 2 — Pick a version and trigger the release workflow
 
-Pick a version string for this test release, e.g. `0.1.0-test`:
+Pick the next version. Check the latest tag to avoid collisions:
+
+```bash
+gh release list --repo crayment/chug-testing --limit 5
+```
+
+Then trigger the release:
 
 ```bash
 gh workflow run release-changelog.yml \
   --repo crayment/chug-testing \
   --ref main \
-  -f version=0.1.0-test
+  -f version=<next-version>
 ```
 
 Wait for it to complete:
@@ -31,31 +37,38 @@ Wait for it to complete:
 gh run watch --repo crayment/chug-testing
 ```
 
-## Step 3 — Verify the release output
-
-Expected:
-- The workflow succeeds
-- `CHANGELOG.md` on `main` has a new `[0.1.0-test]` section with the pending changes listed
-- The `changes/` directory no longer contains the processed `.yml` file
-- A commit was pushed to `main` by `github-actions[bot]`
-
-Check the result:
+## Step 3 — Verify CHANGELOG.md
 
 ```bash
 git -C /Users/crayment/dev/me/chug-testing pull
 cat /Users/crayment/dev/me/chug-testing/CHANGELOG.md
-ls /Users/crayment/dev/me/chug-testing/changes/
 ```
 
-Record the workflow run URL and the commit SHA of the release commit.
+Expected:
+- A new `[version]` section at the top with the Simpsons quote change listed
+- The `changes/` directory no longer contains the processed `.yml` file
 
-## Step 4 — Trigger a second release with no pending changes
+## Step 4 — Verify the GitHub release
+
+```bash
+gh release view <version> --repo crayment/chug-testing
+```
+
+Expected:
+- A GitHub release exists for the version
+- The release body starts with `## Release Notes` followed by the changelog content
+- A `## What's Changed` section follows with PR links
+- A `## New Contributors` section if applicable
+
+Record the release URL and paste the release body.
+
+## Step 5 — Trigger a second release with no pending changes
 
 ```bash
 gh workflow run release-changelog.yml \
   --repo crayment/chug-testing \
   --ref main \
-  -f version=0.1.1-test
+  -f version=<next-version-2>
 ```
 
 Wait for completion:
@@ -64,21 +77,19 @@ Wait for completion:
 gh run watch --repo crayment/chug-testing
 ```
 
-## Step 5 — Verify the no-changes release
-
-Expected:
-- The workflow succeeds
-- `CHANGELOG.md` has a new `[0.1.1-test]` section containing `- No changes`
-- A commit was pushed to `main`
+## Step 6 — Verify the no-changes release
 
 ```bash
 git -C /Users/crayment/dev/me/chug-testing pull
 cat /Users/crayment/dev/me/chug-testing/CHANGELOG.md
+gh release view <version-2> --repo crayment/chug-testing
 ```
 
-Record the workflow run URL and commit SHA.
+Expected:
+- `CHANGELOG.md` has a new section containing `- No changes`
+- The GitHub release exists with an empty `## Release Notes` section
 
 ## Evidence to capture
 
-- First release: workflow run URL, commit SHA, CHANGELOG.md excerpt showing the new section
-- Second release: workflow run URL, commit SHA, CHANGELOG.md excerpt showing the "No changes" section
+- First release: workflow run URL, commit SHA, CHANGELOG.md excerpt, GitHub release URL and body
+- Second release: workflow run URL, commit SHA, CHANGELOG.md excerpt showing `- No changes`, GitHub release URL

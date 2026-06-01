@@ -1,0 +1,6 @@
+description: Add simpsons-quotes.md as integration test product; use chug preview
+  for release notes
+category: chore
+authors:
+- name: Cody Rayment
+  github: crayment
