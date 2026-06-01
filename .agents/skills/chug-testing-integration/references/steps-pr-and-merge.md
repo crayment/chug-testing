@@ -33,24 +33,7 @@ gh pr create --title "Add Simpsons quote" --body "A new quote for the collection
 ## Step 2 — Confirm validation fails
 
 ```bash
-gh pr checks --watch
-```
-
-Expected error:
-```
-A changelog entry file in changes/ is required for this pull request.
-```
-
-Record the failing workflow run URL.
-
-## Step 3 — Add a change file and confirm validation passes
-
-```bash
-chug new --description "Add Simpsons quote: <the quote you added>" --category feature
-git add changes/
-git commit -m "Add change file"
-git push
-gh pr checks --watch
+gh pr checks --watch --repo crayment/chug-testing
 ```
 
 Expected: the `validate` check passes. Record the passing workflow run URL.
@@ -58,7 +41,7 @@ Expected: the `validate` check passes. Record the passing workflow run URL.
 ## Step 4 — Merge the PR
 
 ```bash
-gh pr merge --squash --delete-branch
+gh pr merge --squash --delete-branch --repo crayment/chug-testing
 git -C /Users/crayment/dev/me/chug-testing pull && git -C /Users/crayment/dev/me/chug-testing log --oneline -1
 ```
 
